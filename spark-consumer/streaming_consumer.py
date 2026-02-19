@@ -1,28 +1,30 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import from_json, col
-from pyspark.sql.types import StructType, StringType, IntegerType, DoubleType
+from pyspark.sql.types import StructType, StringType, IntegerType
 
 spark = SparkSession.builder \
-    .appName("RealtimeKafkaSparkPipeline") \
+    .appName("RealtimeShipmentStreamingPipeline") \
     .getOrCreate()
 
-schema = StructType() \
-    .add("event_time", StringType()) \
-    .add("order_id", StringType()) \
-    .add("customer_id", StringType()) \
-    .add("product_id", StringType()) \
-    .add("qty", IntegerType()) \
-    .add("unit_price", DoubleType()) \
-    .add("total_amount", DoubleType())
+shipmentSchema = StructType() \
+    .add("shipment_id", StringType()) \
+    .add("origin", StringType()) \
+    .add("destination", StringType()) \
+    .add("transport_mode", StringType()) \
+    .add("shipment_status", StringType()) \
+    .add("weight_tons", IntegerType()) \
+    .add("distance_km", IntegerType()) \
+    .add("event_timestamp", StringType())
 
 df = spark.readStream \
     .format("kafka") \
     .option("kafka.bootstrap.servers", "localhost:9092") \
-    .option("subscribe", "orders-topic") \
+    .option("subscribe", "shipment_events") \
+    .option("startingOffsets", "latest") \
     .load()
 
 parsed = df.selectExpr("CAST(value AS STRING)") \
-    .select(from_json(col("value"), schema).alias("data")) \
+    .select(from_json(col("value"), shipmentSchema).alias("data")) \
     .select("data.*")
 
 query = parsed.writeStream \
@@ -31,4 +33,3 @@ query = parsed.writeStream \
     .start()
 
 query.awaitTermination()
-
