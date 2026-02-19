@@ -1,7 +1,7 @@
-# 🚀 Real-Time Data Streaming Pipeline
+# 🚆 Real-Time Rail Logistics Shipment Tracking Pipeline
 
 ## 📌 Project Overview
-This project demonstrates a scalable real-time data streaming pipeline designed to process transactional order data using Apache Kafka and Spark Structured Streaming. The pipeline supports event-driven ingestion, ETL orchestration, and analytics-ready data storage in a cloud-based warehouse.
+Designed and implemented a real-time shipment tracking data pipeline for rail logistics operations using Apache Kafka and Spark Structured Streaming. This pipeline ingests transportation shipment events from distributed freight networks and transforms them into analytics-ready datasets for enterprise reporting and supply chain intelligence.
 
 ---
 
