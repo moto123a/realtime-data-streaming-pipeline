@@ -3,10 +3,10 @@ from pyspark.sql.functions import from_json, col
 from pyspark.sql.types import StructType, StringType, IntegerType
 
 spark = SparkSession.builder \
-    .appName("RealtimeShipmentStreamingPipeline") \
+    .appName("RailLogisticsStreamingPipeline") \
     .getOrCreate()
 
-shipmentSchema = StructType() \
+schema = StructType() \
     .add("shipment_id", StringType()) \
     .add("origin", StringType()) \
     .add("destination", StringType()) \
@@ -18,13 +18,12 @@ shipmentSchema = StructType() \
 
 df = spark.readStream \
     .format("kafka") \
-    .option("kafka.bootstrap.servers", "localhost:9092") \
+    .option("kafka.bootstrap.servers", "kafka:9092") \
     .option("subscribe", "shipment_events") \
-    .option("startingOffsets", "latest") \
     .load()
 
 parsed = df.selectExpr("CAST(value AS STRING)") \
-    .select(from_json(col("value"), shipmentSchema).alias("data")) \
+    .select(from_json(col("value"), schema).alias("data")) \
     .select("data.*")
 
 query = parsed.writeStream \
