@@ -7,7 +7,8 @@ Designed and implemented a real-time shipment tracking data pipeline for rail lo
 
 ## 🧩 Architecture
 
-Kafka Producer → Apache Kafka → Spark Structured Streaming → Apache Airflow ETL → AWS Redshift
+Rail Shipment Event Producer → Apache Kafka Event Streaming → Spark Structured Streaming ETL → Apache Airflow Workflow Orchestration → Cloud Data Warehouse (AWS Redshift)
+
 
 ---
 
@@ -47,7 +48,8 @@ docs/
 
 ## 📈 Use Case
 
-Designed for real-time order transaction processing supporting downstream analytics, enterprise reporting, and business intelligence platforms.
+Designed for real-time rail freight shipment tracking supporting downstream logistics analytics, enterprise reporting, and supply chain intelligence platforms.
+
 
 ---
 
